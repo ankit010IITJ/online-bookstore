@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Daily Dose of Reading</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<!--[if ie]><meta content='IE=8' http-equiv='X-UA-Compatible'/><![endif]-->
+		<!-- bootstrap -->
+		<link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">      
+		<link href="static/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">		
+		<link href="static/css/bootstrappage.css" rel="stylesheet"/>
+		
+		<!-- global styles -->
+		<link href="static/css/flexslider.css" rel="stylesheet"/>
+		<link href="static/css/main.css" rel="stylesheet"/>
+
+		<!-- scripts -->
+		<script src="static/js/jquery-1.7.2.min.js"></script>
+		<script src="static/bootstrap/js/bootstrap.min.js"></script>				
+		<script src="static/js/superfish.js"></script>	
+		<script src="static/js/jquery.scrolltotop.js"></script>
+		<!--[if lt IE 9]>			
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+			<script src="js/respond.min.js"></script>
+		<![endif]-->
+	</head>
+    <body>		
+		<div id="top-bar" class="container">
+			<div class="row">
+				<div class="span4">
+					<a href="./adminindex" class="logo pull-left"><img src="static/images/websitelogo.png" class="site_logo" alt=""></a>
+				</div>
+				<div class="span8">
+					<div class="account pull-right">
+						<ul class="user-menu">	
+							<li><a href="./adminindex">Go Back</a></li>	
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="wrapper" class="container">
+			<section class="main-content">				
+				<!-- <div class="row">
+					<div class="span12">	
+						<h4 class="title"><span class="text"><strong>BOOK</strong> Details</span></h4>
+						<div class="row">
+							
+							<div class="span4">
+								<img src="{{ bookData[8] if bookData[8] else 'static/images/books/book.png' }}" 
+									 alt="{{ bookData[1] }}" 
+									 style="max-width:100%; height:auto; max-height:400px;" 
+									 class="thumbnail">
+							</div>
+							
+							
+							<div class="span5">
+								<address>
+									<h5><strong>Title:</strong> <span>{{ bookData[1] }}</span><br></h5>
+									<strong>Book ISBN:</strong> <span>{{ bookData[0] }}</span><br>
+									<strong>Genre:</strong> <span>{{ bookData[2] }}</span><br>
+									<strong>Author Name:</strong> <span>{{ bookData[5] }} {{ bookData[6] }}</span><br>
+									<strong>Publication Year:</strong> <span>{{ bookData[4] }}</span><br>
+									<strong>Publication Country:</strong> <span>{{ bookData[7] }}</span><br>								
+								</address>									
+								<h4><strong>Price: Rs {{ bookData[3] }} /-</strong></h4>
+								</br>
+								
+								
+								<form method="GET" action="/updateBook" style="display:inline;">
+									<input type="hidden" name="bookID" value="{{ bookData[0] }}">
+									<button type="submit" class="btn btn-primary">Update</button>
+								</form>
+
+								<form method="POST" action="{{ url_for('deleteBookRoute') }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this book?');">
+									<input type="hidden" name="bookID" value="{{ bookData[0] }}">
+									<button type="submit" class="btn btn-danger">Delete</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div> -->
+<div class="row">
+    <div class="span4">
+        <img src="{{ bookData[9] if bookData[9] else 'static/images/books/book.png' }}" 
+             alt="{{ bookData[1] }}" style="width:250px; height:auto; border-radius:10px;">
+    </div>
+
+    <div class="span6">
+        <address>
+            <h5><strong>Title:</strong> <span>{{ bookData[1] }}</span><br></h5>
+            <strong>Book ISBN:</strong> <span>{{ bookData[0] }}</span><br>
+            <strong>Genre:</strong> <span>{{ bookData[2] }}</span><br>
+            <strong>Author Name:</strong> <span>{{ bookData[5] }} {{ bookData[6] }}</span><br>
+            <strong>Publication Year:</strong> <span>{{ bookData[4] }}</span><br>
+            <strong>Publication Country:</strong> <span>{{ bookData[7] }}</span><br>
+            <strong>Total Stock:</strong> <span>{{ bookData[8] }}</span><br>
+        </address>
+        <h4><strong>Price: Rs {{ bookData[3] }} /-</strong></h4>
+        <br>
+
+        <!-- Buttons -->
+        <form method="GET" action="/updateBook" style="display:inline;">
+            <input type="hidden" name="bookID" value="{{ bookData[0] }}">
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+
+        <form method="POST" action="{{ url_for('deleteBookRoute') }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this book?');">
+            <input type="hidden" name="bookID" value="{{ bookData[0] }}">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+</div>
+
+
+			</section>		
+			<section id="copyright">
+			</section>	
+		</div>
+		<script src="static/js/common.js"></script>
+		<script>
+			$(document).ready(function() {
+				$('#checkout').click(function (e) {
+					document.location.href = "checkout.html";
+				})
+			});
+		</script>		
+    </body>
+</html>

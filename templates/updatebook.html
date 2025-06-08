@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+		<meta charset="utf-8">
+		<title>Daily Dose of Reading</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<!--[if ie]><meta content='IE=8' http-equiv='X-UA-Compatible'/><![endif]-->
+		<!-- bootstrap -->
+		<link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">      
+		<link href="static/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+		
+		<link href="static/css/bootstrappage.css" rel="stylesheet"/>
+		
+		<!-- global styles -->
+		<link href="static/css/flexslider.css" rel="stylesheet"/>
+		<link href="static/css/main.css" rel="stylesheet"/>
+
+		<!-- scripts -->
+		<script src="static/js/jquery-1.7.2.min.js"></script>
+		<script src="static/bootstrap/js/bootstrap.min.js"></script>				
+		<script src="static/js/superfish.js"></script>	
+		<script src="static/js/jquery.scrolltotop.js"></script>
+		<!--[if lt IE 9]>			
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+			<script src="js/respond.min.js"></script>
+		<![endif]-->
+</head>
+<body>
+<div id="top-bar" class="container">
+    
+    <section class="main-content">
+        <div class="row">
+            <div class="span12">
+    
+                <div class="row">
+					<div class="span12">
+                        <h2>Update Book</h2>
+                        <form action="{{ url_for('updateBookRoute') }}" method="POST" enctype="multipart/form-data">
+
+                            <div class="form-group">
+                                <label>Book ISBN</label>
+                                <input type="number" name="bookID" class="form-control" value="{{ bookData[0] }}" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" name="title" class="form-control" value="{{ bookData[1] }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Price</label>
+                                <input type="number" name="price" class="form-control" value="{{ bookData[3] }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Author First Name</label>
+                                <input type="text" name="fname" class="form-control" value="{{ bookData[5] }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Author Last Name</label>
+                                <input type="text" name="lname" class="form-control" value="{{ bookData[6] }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Publication Country</label>
+                                <input type="text" name="country" class="form-control" value="{{ bookData[7] }}" required>
+                            </div>
+                            <div class="form-group">
+                        <label>Total Stock</label>
+                        <input type="number" name="stock" class="form-control" value="{{ bookData[8] or 0 }}" required>
+                    </div>
+
+                            <div class="form-group">
+                                <label>Update Book Image</label>
+                                <input type="file" name="image" accept="image/*" class="form-control">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Update</button>
+                            <a href="/books" class="btn btn-secondary">Cancel</a>
+                        </form>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </section>        
+</div>
+</body>
+</html>

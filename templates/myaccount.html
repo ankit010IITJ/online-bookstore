@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Daily Dose of Reading | My Account</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage your account details and preferences">
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #5e35b1;
+            --secondary-color: #3949ab;
+            --accent-color: #ff7043;
+            --light-color: #f5f5f5;
+            --dark-color: #263238;
+            --success-color: #43a047;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--dark-color);
+            background-color: #f9f9f9;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Merriweather', serif;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
+        }
+        
+        .navbar-brand img {
+            height: 50px;
+        }
+        
+        .user-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu li {
+            margin-left: 20px;
+        }
+        
+        .user-menu a {
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .user-menu a:hover {
+            color: var(--primary-color);
+        }
+        
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Main Navigation */
+        .main-navigation {
+            background-color: var(--primary-color);
+            padding: 10px 0;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        
+        .nav-menu li {
+            margin-right: 20px;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        /* Account Section */
+        .account-section {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .account-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        .account-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 25px;
+            border: 3px solid var(--primary-color);
+        }
+        
+        .account-title h2 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .account-title p {
+            color: #666;
+            margin-bottom: 0;
+        }
+        
+        .account-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        
+        .account-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .detail-group {
+            margin-bottom: 20px;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .detail-value {
+            font-size: 1.1rem;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .btn-edit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-edit:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        /* Footer */
+        .site-footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-section {
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 30px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .account-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .account-avatar {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-menu li {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="skip-link visually-hidden">Skip to main content</a>
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% if accountType == 'admin' %}/adminindex{% else %}/customerindex{% endif %}">
+                <img src="static/images/websitelogo.png" alt="Daily Dose of Reading" class="img-fluid">
+            </a>
+            
+            <div class="account">
+                <ul class="user-menu">             
+                    <li><a href="./logout" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Navigation -->
+    <nav class="main-navigation">
+        <div class="container">
+            <ul class="nav-menu">
+                {% if accountType == "admin" %}
+                <li><a href="./adminindex" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a></li>
+                <li><a href="./search" class="nav-link">
+                    <i class="fas fa-search"></i> Search Books
+                </a></li>
+                <li><a href="./books" class="nav-link">
+                    <i class="fas fa-book"></i> Manage Books
+                </a></li>
+                <li><a href="./inventory" class="nav-link">
+                    <i class="fas fa-boxes"></i> Inventory
+                </a></li>
+                <li><a href="./users" class="nav-link">
+                    <i class="fas fa-users"></i> Users
+                </a></li>
+                <li><a href="./myorders" class="nav-link">
+                    <i class="fas fa-clipboard-list"></i> Orders
+                </a></li>
+                <li><a href="./myaccount" class="nav-link active">
+                    <i class="fas fa-user"></i> My Account
+                </a></li>
+                {% else %}
+                <li><a href="./customerindex" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a></li>
+                <li><a href="./customersearch" class="nav-link">
+                    <i class="fas fa-search"></i> Search Books
+                </a></li>
+                <li><a href="./myorders" class="nav-link">
+                    <i class="fas fa-shopping-bag"></i> My Orders
+                </a></li>
+                <li><a href="./myaccount" class="nav-link active">
+                    <i class="fas fa-user"></i> My Account
+                </a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" class="container my-5">
+        <div class="account-section">
+            <div class="account-header">
+                <img src="static/images/usericon.jpg" alt="User Avatar" class="account-avatar">
+                <div class="account-title">
+                    <h2>{{ Data[1] }} {{ Data[2] }}</h2>
+                    <p>{{ Data[3] }}</p>
+                    <span class="account-badge">
+                        <i class="fas fa-user-shield"></i> {{ accountType|capitalize }} Account
+                    </span>
+                </div>
+            </div>
+            
+            <div class="account-details">
+                <div>
+                    <div class="detail-group">
+                        <div class="detail-label">Username</div>
+                        <div class="detail-value">{{ Data[0] }}</div>
+                    </div>
+                    
+                    <div class="detail-group">
+                        <div class="detail-label">Email Address</div>
+                        <div class="detail-value">{{ Data[3] }}</div>
+                    </div>
+                    
+                    <div class="detail-group">
+                        <div class="detail-label">Phone Number</div>
+                        <div class="detail-value">{{ Data[5] }}</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="detail-group">
+                        <div class="detail-label">Account Type</div>
+                        <div class="detail-value">{{ accountType|capitalize }}</div>
+                    </div>
+                    
+                    <div class="detail-group">
+                        <div class="detail-label">Password</div>
+                        <div class="detail-value">••••••••</div>
+                    </div>
+                    
+                    {% if accountType == "customer" %}
+                    <div class="detail-group">
+                        <div class="detail-label">Address</div>
+                        <div class="detail-value">
+                            {{ Data[9] }}<br>
+                            {{ Data[7] }}, {{ Data[6] }}<br>
+                            {{ Data[8] }}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="text-end mt-4">
+                <button class="btn-edit">
+                    <i class="fas fa-edit"></i> Edit Account
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <img src="static/images/websitelogo-white.png" alt="Daily Dose of Reading" height="50" class="mb-3">
+                    <p>Your one-stop destination for discovering and purchasing your next favorite book.</p>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="{% if accountType == 'admin' %}/adminindex{% else %}/customerindex{% endif %}">Home</a></li>
+                        <li><a href="{% if accountType == 'admin' %}/search{% else %}/customersearch{% endif %}">Search Books</a></li>
+                        <li><a href="./myorders">My Orders</a></li>
+                        <li><a href="./myaccount">My Account</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4 mb-4">
+                    <h3>Contact Us</h3>
+                    <address>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 Book Street, Reading City</p>
+                        <p><i class="fas fa-phone"></i> +1 234 567 890</p>
+                        <p><i class="fas fa-envelope"></i> info@dailydoseofreading.com</p>
+                    </address>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Daily Dose of Reading. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/main.js"></script>
+</body>
+</html>

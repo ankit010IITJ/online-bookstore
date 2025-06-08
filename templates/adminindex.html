@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Dose of Reading | Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin dashboard for Daily Dose of Reading bookstore">
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #5e35b1;
+            --secondary-color: #3949ab;
+            --accent-color: #ff7043;
+            --light-color: #f5f5f5;
+            --dark-color: #263238;
+        }
+        
+        body {
+            font-family: "Open Sans", sans-serif;
+            color: var(--dark-color);
+            background-color: #f9f9f9;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: "Merriweather", serif;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .navbar-brand img {
+            height: 50px;
+        }
+        
+        .user-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu li {
+            margin-left: 20px;
+        }
+        
+        .user-menu a {
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .user-menu a:hover {
+            color: var(--primary-color);
+        }
+        
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Main Navigation */
+        .main-navigation {
+            background-color: var(--primary-color);
+            padding: 10px 0;
+            margin-bottom: 30px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        
+        .nav-menu li {
+            position: relative;
+            margin-right: 20px;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-link:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .nav-link.active {
+            background-color: var(--accent-color);
+        }
+        
+        .nav-link i {
+            margin-right: 5px;
+        }
+        
+        /* Dropdown Menu */
+        .dropdown-menu {
+            position: absolute;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            padding: 10px 0;
+            min-width: 180px;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .nav-menu li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .dropdown-menu li {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .dropdown-menu a {
+            color: var(--dark-color);
+            padding: 8px 15px;
+            display: block;
+            transition: background-color 0.3s;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: var(--light-color);
+        }
+        
+        /* Section Titles */
+        .section-title {
+            position: relative;
+            margin-bottom: 40px;
+            padding-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        
+        /* Genre Cards */
+        .genre-card {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .genre-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .genre-card img {
+            height: 180px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .genre-card .genre-name {
+            padding: 15px;
+            background-color: white;
+            margin: 0;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        /* Book Cards */
+        .book-card {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            height: 100%;
+            background-color: white;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .book-card img {
+            height: 250px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .book-card .book-details {
+            padding: 15px;
+        }
+        
+        .book-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-decoration: none;
+        }
+        
+        .book-id {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .book-author {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .book-price {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+        
+        .book-genre {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .book-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .book-actions a {
+            flex: 1;
+            text-align: center;
+            padding: 5px;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .btn-view {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-view:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-edit {
+            background-color: #ffc107;
+            color: var(--dark-color);
+        }
+        
+        .btn-edit:hover {
+            background-color: #e0a800;
+        }
+        
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+        
+        /* Footer */
+        .site-footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-section {
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Carousel Navigation */
+        .carousel-nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .carousel-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .carousel-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+            }
+            
+            .nav-menu li {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .dropdown-menu {
+                position: static;
+                box-shadow: none;
+                opacity: 1;
+                visibility: visible;
+                display: none;
+                padding-left: 20px;
+            }
+            
+            .nav-menu li:hover .dropdown-menu {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="static/images/websitelogo.png" alt="Daily Dose of Reading logo" class="img-fluid">
+            </a>
+            
+            <div class="account">
+                <ul class="user-menu">             
+                    <li><a href="./logout" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Navigation -->
+    <nav class="main-navigation" aria-label="Main navigation">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="./adminindex" class="nav-link active">
+                    <i class="fas fa-home"></i> Home
+                </a></li>
+                <li><a href="./search" class="nav-link">
+                    <i class="fas fa-search"></i> Search Books
+                </a></li>
+                <li>
+                    <a href="./books" class="nav-link">
+                        <i class="fas fa-book"></i> Books
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="./books">Add Book</a></li>
+                        <li><a href="./books">Update Books</a></li>
+                        <li><a href="./books">Delete Books</a></li>
+                    </ul>
+                </li>
+                <li><a href="./inventory" class="nav-link">
+                    <i class="fas fa-boxes"></i> Inventory
+                </a></li>
+                <li>
+                    <a href="./users" class="nav-link">
+                        <i class="fas fa-users"></i> Users
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="./users">Admins</a></li>
+                        <li><a href="./users">Customers</a></li>
+                    </ul>
+                </li>
+                <li><a href="./myorders" class="nav-link">
+                    <i class="fas fa-clipboard-list"></i> Orders
+                </a></li>
+                <li><a href="./myaccount" class="nav-link">
+                    <i class="fas fa-user-cog"></i> My Account
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <div class="container">
+            <!-- Genre Section -->
+            <section id="genres" class="mb-5">
+                <h2 class="section-title">Browse by Genre</h2>
+                <div class="row">
+                    {% for genre in genreData %}
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <div class="genre-card">
+                            <a href="#genre-{{ genre[0]|lower|replace(' ', '-') }}">
+                                <img src="static/images/books/genre.png" 
+                                     alt="{{ genre[0] }} books"
+                                     loading="lazy">
+                                <h3 class="genre-name">{{ genre[0] }}</h3>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Books by Genre -->
+            {% for genre in genreData %}
+            <section id="genre-{{ genre[0]|lower|replace(' ', '-') }}" class="mb-5">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="section-title mb-0">{{ genre[0] }} Books</h2>
+                    <div class="carousel-nav">
+                        <div class="carousel-btn" onclick="$('#carousel-{{ loop.index }}').carousel('prev')">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="carousel-btn" onclick="$('#carousel-{{ loop.index }}').carousel('next')">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="carousel-{{ loop.index }}" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="row">
+                                {% for book in booksData if book[4] == genre[0] %}
+                                <div class="col-6 col-md-4 col-lg-3">
+                                    <div class="book-card">
+                                        <img src="{{ book[7] if book[7] else 'static/images/books/book.png' }}" 
+                                             alt="Cover of {{ book[3] }} by {{ book[8] }} {{ book[9] }}"
+                                             loading="lazy">
+                                        <div class="book-details">
+                                            <a href="/bookDetailsAdmin{{ book[0] }}" class="book-title">{{ book[3] }}</a>
+                                            <p class="book-id">ID: {{ book[0] }}</p>
+                                            <p class="book-author">{{ book[8] }} {{ book[9] }}</p>
+                                            <p class="book-genre">{{ book[4] }}</p>
+                                            <p class="book-price">Rs {{ book[6] }} /-</p>
+                                            <div class="book-actions">
+                                                <a href="/bookDetailsAdmin{{ book[0] }}" class="btn-view">View</a>
+                                                <a href="/editBook{{ book[0] }}" class="btn-edit">Edit</a>
+                                                <a href="/deleteBook{{ book[0] }}" class="btn-delete">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% endfor %}
+
+            <!-- All Books Section -->
+            <section class="mb-5">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="section-title mb-0">All Books</h2>
+                    <a href="./books" class="btn btn-sm btn-outline-primary">Manage Books</a>
+                </div>
+                
+                <div class="row">
+                    {% for book in booksData %}
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="book-card">
+                            <img src="{{ book[7] if book[7] else 'static/images/books/book.png' }}" 
+                                 alt="Cover of {{ book[3] }} by {{ book[8] }} {{ book[9] }}"
+                                 loading="lazy">
+                            <div class="book-details">
+                                <a href="/bookDetailsAdmin{{ book[0] }}" class="book-title">{{ book[3] }}</a>
+                                <p class="book-id">ID: {{ book[0] }}</p>
+                                <p class="book-author">{{ book[8] }} {{ book[9] }}</p>
+                                <p class="book-genre">{{ book[4] }}</p>
+                                <p class="book-price">Rs {{ book[6] }} /-</p>
+                                <div class="book-actions">
+                                    <a href="/bookDetailsAdmin{{ book[0] }}" class="btn-view">View</a>
+                                    <a href="/editBook{{ book[0] }}" class="btn-edit">Edit</a>
+                                    <a href="/deleteBook{{ book[0] }}" class="btn-delete">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <img src="static/images/websitelogo-white.png" alt="Daily Dose of Reading logo" height="50" class="mb-3">
+                    <p>Your one-stop destination for managing the bookstore inventory and content.</p>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="./adminindex">Dashboard</a></li>
+                        <li><a href="./books">Books</a></li>
+                        <li><a href="./users">Users</a></li>
+                        <li><a href="./myaccount">Account</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4 mb-4">
+                    <h3>Contact Admin</h3>
+                    <address>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 Book Street, Reading City</p>
+                        <p><i class="fas fa-phone"></i> +1 234 567 890</p>
+                        <p><i class="fas fa-envelope"></i> admin@dailydoseofreading.com</p>
+                    </address>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Daily Dose of Reading. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        // Initialize Bootstrap components
+        document.addEventListener("DOMContentLoaded", function() {
+            // Add shadow to navbar on scroll
+            window.addEventListener("scroll", function() {
+                if (window.scrollY > 50) {
+                    document.querySelector(".navbar").style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
+                } else {
+                    document.querySelector(".navbar").style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.1)";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

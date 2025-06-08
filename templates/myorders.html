@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Daily Dose of Reading | {% if accountType == "admin" %}All Orders{% else %}My Orders{% endif %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% if accountType == 'admin' %}View and manage all customer orders{% else %}View your book order history{% endif %}">
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #5e35b1;
+            --secondary-color: #3949ab;
+            --accent-color: #ff7043;
+            --light-color: #f5f5f5;
+            --dark-color: #263238;
+            --success-color: #43a047;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--dark-color);
+            background-color: #f9f9f9;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Merriweather', serif;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
+        }
+        
+        .navbar-brand img {
+            height: 50px;
+        }
+        
+        .user-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu li {
+            margin-left: 20px;
+        }
+        
+        .user-menu a {
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .user-menu a:hover {
+            color: var(--primary-color);
+        }
+        
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Main Navigation */
+        .main-navigation {
+            background-color: var(--primary-color);
+            padding: 10px 0;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        
+        .nav-menu li {
+            margin-right: 20px;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        /* Section Titles */
+        .section-title {
+            position: relative;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .section-title:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        
+        /* Orders Table */
+        .orders-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            background-color: white;
+        }
+        
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .orders-table thead {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .orders-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .orders-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+        
+        .orders-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .orders-table tr:hover {
+            background-color: rgba(94, 53, 177, 0.05);
+        }
+        
+        .order-id {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .order-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .order-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-completed {
+            background-color: #e8f5e9;
+            color: var(--success-color);
+        }
+        
+        .status-pending {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+        
+        .order-total {
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        
+        .btn-order-details {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-order-details:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .empty-state-icon {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state-text {
+            color: #888;
+            font-size: 1.1rem;
+        }
+        
+        /* Footer */
+        .site-footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-section {
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 30px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .orders-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-menu li {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="skip-link visually-hidden">Skip to main content</a>
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% if accountType == 'admin' %}/adminindex{% else %}/customerindex{% endif %}">
+                <img src="static/images/websitelogo.png" alt="Daily Dose of Reading" class="img-fluid">
+            </a>
+            
+            <div class="account">
+                <ul class="user-menu">             
+                    <li><a href="./logout" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Navigation -->
+    <nav class="main-navigation">
+        <div class="container">
+            <ul class="nav-menu">
+                {% if accountType == "admin" %}
+                <li><a href="./adminindex" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a></li>
+                <li><a href="./search" class="nav-link">
+                    <i class="fas fa-search"></i> Search Books
+                </a></li>
+                <li><a href="./books" class="nav-link">
+                    <i class="fas fa-book"></i> Manage Books
+                </a></li>
+                <li><a href="./inventory" class="nav-link">
+                    <i class="fas fa-boxes"></i> Inventory
+                </a></li>
+                <li><a href="./users" class="nav-link">
+                    <i class="fas fa-users"></i> Users
+                </a></li>
+                <li><a href="./myorders" class="nav-link active">
+                    <i class="fas fa-clipboard-list"></i> Orders
+                </a></li>
+                {% else %}
+                <li><a href="./customerindex" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a></li>
+                <li><a href="./customersearch" class="nav-link">
+                    <i class="fas fa-search"></i> Search Books
+                </a></li>
+                <li><a href="./myorders" class="nav-link active">
+                    <i class="fas fa-shopping-bag"></i> My Orders
+                </a></li>
+                <li><a href="./myaccount" class="nav-link">
+                    <i class="fas fa-user"></i> My Account
+                </a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" class="container my-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title">
+                <i class="fas fa-clipboard-list me-2"></i>
+                {% if accountType == "admin" %}All Orders{% else %}My Orders{% endif %}
+            </h2>
+            {% if Data %}
+            <div class="results-count">{{ Data|length }} orders found</div>
+            {% endif %}
+        </div>
+        
+        <div class="orders-card">
+            {% if Data %}
+                <div class="table-responsive">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                {% if accountType == "admin" %}
+                                <th>Order ID</th>
+                                <th>Customer ID</th>
+                                {% endif %}
+                                <th>Book</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Date</th>
+                                {% if accountType == "admin" %}
+                                <th>Actions</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in Data %}
+                            <tr>
+                                {% if accountType == "admin" %}
+                                <td class="order-id">{{ order[0] }}</td>
+                                <td>{{ order[1] }}</td>
+                                {% endif %}
+                                <td>
+                                    <div class="fw-semibold">{{ order[6] if accountType == "admin" else order[4] }}</div>
+                                    <div class="text-muted small">ISBN: {{ order[2] if accountType == "admin" else order[0] }}</div>
+                                </td>
+                                <td>{{ order[3] if accountType == "admin" else order[1] }}</td>
+                                <td class="order-total">Rs {{ order[4] if accountType == "admin" else order[2] }} /-</td>
+                                <td>
+                                    <div class="order-date">
+                                        <i class="far fa-calendar-alt me-1"></i>
+                                        {{ order[5] if accountType == "admin" else order[3] }}
+                                    </div>
+                                </td>
+                                {% if accountType == "admin" %}
+                                <td>
+                                    <button class="btn-order-details">
+                                        <i class="fas fa-eye me-1"></i> View
+                                    </button>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h4 class="empty-state-text">No orders found</h4>
+                    {% if accountType == "customer" %}
+                    <a href="./customersearch" class="btn btn-primary mt-3">
+                        <i class="fas fa-search me-1"></i> Browse Books
+                    </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <img src="static/images/websitelogo-white.png" alt="Daily Dose of Reading" height="50" class="mb-3">
+                    <p>Your one-stop destination for discovering and purchasing your next favorite book.</p>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="{% if accountType == 'admin' %}/adminindex{% else %}/customerindex{% endif %}">Home</a></li>
+                        <li><a href="{% if accountType == 'admin' %}/search{% else %}/customersearch{% endif %}">Search Books</a></li>
+                        <li><a href="./myorders">My Orders</a></li>
+                        <li><a href="./myaccount">My Account</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4 mb-4">
+                    <h3>Contact Us</h3>
+                    <address>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 Book Street, Reading City</p>
+                        <p><i class="fas fa-phone"></i> +1 234 567 890</p>
+                        <p><i class="fas fa-envelope"></i> info@dailydoseofreading.com</p>
+                    </address>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Daily Dose of Reading. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/main.js"></script>
+</body>
+</html>

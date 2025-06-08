@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Daily Dose of Reading - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login to access your book recommendations and account">
+    <!--[if ie]><meta content='IE=8' http-equiv='X-UA-Compatible'/><![endif]-->
+    <!-- bootstrap -->
+    <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">      
+    <link href="static/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">		
+    <link href="static/css/bootstrappage.css" rel="stylesheet"/>
+    
+    <!-- global styles -->
+    <link href="static/css/flexslider.css" rel="stylesheet"/>
+    <link href="static/css/main.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .logo img {
+            max-height: 60px;
+            transition: all 0.3s ease;
+        }
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+        .main-content {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-top: 30px;
+        }
+        .title .text {
+            font-family: 'Merriweather', serif;
+            color: #2c3e50;
+            font-size: 28px;
+            display: inline-block;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+        }
+        .form-stacked {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        .input-xlarge {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: border 0.3s;
+        }
+        .input-xlarge:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.2);
+            outline: none;
+        }
+        select#account {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .btn-inverse {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        .btn-inverse:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .reset a {
+            color: #7f8c8d;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .reset a:hover {
+            color: #3498db;
+            text-decoration: underline;
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #7f8c8d;
+        }
+        .register-link a {
+            color: #3498db;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        .account-type-toggle {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+        .account-type-toggle label {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            margin: 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+        .account-type-toggle input[type="radio"] {
+            display: none;
+        }
+        .account-type-toggle input[type="radio"]:checked + label {
+            background: #3498db;
+            color: white;
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #ddd;
+        }
+        .divider-text {
+            padding: 0 10px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>		
+    <div id="top-bar" class="container">
+        <div class="row">
+            <div class="span4">
+                <a href="index.html" class="logo pull-left"><img src="static/images/websitelogo.png" class="site_logo" alt="Daily Dose of Reading"></a>
+            </div>
+            <div class="span8">
+                <div class="account pull-right">
+                    <ul class="user-menu">	
+                        <li><a href="/" class="btn btn-small">Go Back</a></li>			
+                        <li><a href="/register" class="btn btn-small btn-primary">Register</a></li>		
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="wrapper" class="container">
+        <section class="main-content">				
+            <div class="row">
+                <div class="span12">	
+                    <h4 class="title"><span class="text"><strong>Welcome Back</strong> to Daily Dose of Reading</span></h4>
+                    <div class="content">
+                        <form action="{{url_for('loginRoute')}}" class="form-stacked" method="POST">
+                            <input type="hidden" name="next" value="/">
+                            <fieldset>
+                                <div class="control-group">
+                                    <label class="control-label">Username</label>
+                                    <div class="controls">
+                                        <input type="text" placeholder="Enter your username" id="username" class="input-xlarge" name="username" required>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Password</label>
+                                    <div class="controls">
+                                        <input type="password" placeholder="Enter your password" id="password" class="input-xlarge" name="password" required>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Account Type</label>
+                                    <div class="account-type-toggle">
+                                        <input type="radio" id="customer" name="account" value="customer" checked>
+                                        <label for="customer">Customer</label>
+                                        <input type="radio" id="admin" name="account" value="admin">
+                                        <label for="admin">Admin</label>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <input tabindex="3" class="btn btn-inverse large" type="submit" value="Sign In">
+                                    <div class="register-link">
+                                        Don't have an account? <a href="/register">Register here</a>
+                                    </div>
+                                    <div class="reset">
+                                        <a tabindex="4" href="#" title="Recover your password">Forgot your password?</a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>	
+                    </div>			
+                </div>
+            </div>
+        </section>			
+    </div>
+    {% if response == 1 %}
+    <script>								
+        alert("Registration successful");
+    </script>
+    {% endif %}
+
+    {% if response == 0 %}								
+    <script>								
+        alert("Login Failed! Please enter correct credentials");
+    </script>
+    {% endif %}
+    
+    <script>
+        // Add animation to form elements when they come into view
+        document.addEventListener('DOMContentLoaded', function() {
+            const formElements = document.querySelectorAll('.control-group');
+            formElements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Dose of Reading | Bookstore</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover your next favorite book at Daily Dose of Reading - a wide selection of books across all genres">
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #5e35b1;
+            --secondary-color: #3949ab;
+            --accent-color: #ff7043;
+            --light-color: #f5f5f5;
+            --dark-color: #263238;
+        }
+        
+        body {
+            font-family: "Open Sans", sans-serif;
+            color: var(--dark-color);
+            background-color: #f9f9f9;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: "Merriweather", serif;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .navbar-brand img {
+            height: 50px;
+        }
+        
+        .user-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu li {
+            margin-left: 20px;
+        }
+        
+        .user-menu a {
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .user-menu a:hover {
+            color: var(--primary-color);
+        }
+        
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Main Navigation */
+        .main-navigation {
+            background-color: var(--primary-color);
+            padding: 10px 0;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        
+        .nav-menu li {
+            margin-right: 20px;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-link:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .nav-link.active {
+            background-color: var(--accent-color);
+        }
+        
+        .nav-link i {
+            margin-right: 5px;
+        }
+        
+        /* Hero Section */
+        .hero-carousel {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        
+        .hero-carousel img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        
+        .quote-container {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            margin-top: -80px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .featured-quote {
+            font-size: 1.5rem;
+            font-style: italic;
+            margin-bottom: 0;
+        }
+        
+        .featured-quote cite {
+            display: block;
+            margin-top: 10px;
+            font-style: normal;
+            font-size: 1rem;
+        }
+        
+        /* Section Titles */
+        .section-title {
+            position: relative;
+            margin-bottom: 40px;
+            padding-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        
+        /* Genre Cards */
+        .genre-card {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .genre-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .genre-card img {
+            height: 180px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .genre-card .genre-name {
+            padding: 15px;
+            background-color: white;
+            margin: 0;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        /* Book Cards */
+        .book-card {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            height: 100%;
+            background-color: white;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .book-card img {
+            height: 250px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .book-card .book-details {
+            padding: 15px;
+        }
+        
+        .book-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-decoration: none;
+        }
+        
+        .book-author {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .book-price {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+        
+        .book-genre {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .btn-view-details {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-view-details:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .book-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 1;
+        }
+        
+        /* Footer */
+        .site-footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-section {
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        
+        .skip-link:focus {
+            top: 0;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .hero-carousel img {
+                height: 300px;
+            }
+            
+            .quote-container {
+                margin-top: -40px;
+                padding: 20px;
+            }
+            
+            .featured-quote {
+                font-size: 1.2rem;
+            }
+            
+            .nav-menu {
+                flex-direction: column;
+            }
+            
+            .nav-menu li {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="static/images/websitelogo.png" alt="Daily Dose of Reading logo" class="img-fluid">
+            </a>
+            
+            <div class="account">
+                <ul class="user-menu">             
+                    <li><a href="./logout" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Navigation -->
+    <nav class="main-navigation" aria-label="Main navigation">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="./customerindex" class="nav-link active">
+                    <i class="fas fa-home"></i> Home
+                </a></li>
+                <li><a href="./customersearch" class="nav-link">
+                    <i class="fas fa-search"></i> Search Books
+                </a></li>
+                <li><a href="./myorders" class="nav-link">
+                    <i class="fas fa-shopping-bag"></i> My Orders
+                </a></li>
+                <li><a href="./myaccount" class="nav-link">
+                    <i class="fas fa-user"></i> My Account
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">	
+
+        <div class="container">
+            <!-- Genre Section -->
+            <section id="genres" class="mb-5">
+                <h2 class="section-title">Browse by Genre</h2>
+                <div class="row">
+                    {% for genre in genreData %}
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <div class="genre-card">
+                            <a href="#genre-{{ genre[0]|lower|replace(' ', '-') }}">
+                                <img src="static/images/books/genre.png" 
+                                     alt="{{ genre[0] }} books"
+                                     loading="lazy">
+                                <h3 class="genre-name">{{ genre[0] }}</h3>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Books by Genre -->
+            {% for genre in genreData %}
+            <section id="genre-{{ genre[0]|lower|replace(' ', '-') }}" class="mb-5">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="section-title mb-0">{{ genre[0] }} Books</h2>
+                    <a href="./customersearch?genre={{ genre[0] }}" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="row">
+                    {% for book in booksData if book[4] == genre[0] %}
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="book-card">
+                            <div class="book-badge">Bestseller</div>
+                            <a href="/bookdetail{{ book[0] }}">
+                                <img src="{{ book[7] if book[7] else 'static/images/books/book.png' }}" 
+                                     alt="Cover of {{ book[3] }} by {{ book[8] }} {{ book[9] }}"
+                                     loading="lazy">
+                                <div class="book-details">
+                                    <h3 class="book-title">{{ book[3] }}</h3>
+                                    <p class="book-author">by {{ book[8] }} {{ book[9] }}</p>
+                                    <p class="book-genre">{{ book[4] }}</p>
+                                    <p class="book-price">Rs {{ book[6] }} /-</p>
+                                    <a href="/bookdetail{{ book[0] }}" class="btn-view-details">
+                                        View Details
+                                    </a>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endfor %}
+
+            <!-- All Books Section -->
+            <section class="all-books-section mb-5">
+                <h2 class="section-title">All Books</h2>
+                <div class="row">
+                    {% for book in booksData %}
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="book-card">
+                            <div class="book-badge">New Release</div>
+                            <a href="/bookdetail{{ book[0] }}">
+                                <img src="{{ book[7] if book[7] else 'static/images/books/book.png' }}" 
+                                     alt="Cover of {{ book[3] }} by {{ book[8] }} {{ book[9] }}"
+                                     loading="lazy">
+                                <div class="book-details">
+                                    <h3 class="book-title">{{ book[3] }}</h3>
+                                    <p class="book-author">by {{ book[8] }} {{ book[9] }}</p>
+                                    <p class="book-genre">{{ book[4] }}</p>
+                                    <p class="book-price">Rs {{ book[6] }} /-</p>
+                                    <a href="/bookdetail{{ book[0] }}" class="btn-view-details">
+                                        View Details
+                                    </a>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <img src="static/images/websitelogo-white.png" alt="Daily Dose of Reading logo" height="50" class="mb-3">
+                    <p>Your one-stop destination for discovering and purchasing your next favorite book.</p>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="./customerindex">Home</a></li>
+                        <li><a href="./customersearch">Search Books</a></li>
+                        <li><a href="./myorders">My Orders</a></li>
+                        <li><a href="./myaccount">My Account</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4 mb-4">
+                    <h3>Contact Us</h3>
+                    <address>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 Book Street, Reading City</p>
+                        <p><i class="fas fa-phone"></i> +1 234 567 890</p>
+                        <p><i class="fas fa-envelope"></i> info@dailydoseofreading.com</p>
+                    </address>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Daily Dose of Reading. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/jquery-3.6.0.min.js"></script>
+    <script src="static/js/jquery.flexslider-min.js"></script>
+    <script src="static/js/main.js"></script>
+    
+    <script>
+        // Initialize carousels and other interactive elements
+        document.addEventListener("DOMContentLoaded", function() {
+            $(".flexslider").flexslider({
+                animation: "fade",
+                slideshowSpeed: 4000,
+                animationSpeed: 600,
+                controlNav: false,
+                directionNav: true,
+                controlsContainer: ".flex-container"
+            });
+            
+            // Add shadow to navbar on scroll
+            window.addEventListener("scroll", function() {
+                if (window.scrollY > 50) {
+                    document.querySelector(".navbar").style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
+                } else {
+                    document.querySelector(".navbar").style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.1)";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
