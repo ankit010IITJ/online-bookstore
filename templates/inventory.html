@@ -1,163 +1,574 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
-		<title>Daily Dose of Reading</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="">
-		<!--[if ie]><meta content='IE=8' http-equiv='X-UA-Compatible'/><![endif]-->
-		<!-- bootstrap -->
-		<link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">      
-		<link href="static/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">		
-		<link href="static/css/bootstrappage.css" rel="stylesheet"/>
-		
-		<!-- global styles -->
-		<link href="static/css/flexslider.css" rel="stylesheet"/>
-		<link href="static/css/main.css" rel="stylesheet"/>
-
-		<!-- scripts -->
-		<script src="static/js/jquery-1.7.2.min.js"></script>
-		<script src="static/bootstrap/js/bootstrap.min.js"></script>				
-		<script src="static/js/superfish.js"></script>	
-		<script src="static/js/jquery.scrolltotop.js"></script>
-		<!--[if lt IE 9]>			
-			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-			<script src="js/respond.min.js"></script>
-		<![endif]-->
-        <style>
-        table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
+    <title>Book Harbor | Inventory Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage and view inventory stock levels for all books">
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #5e35b1;
+            --secondary-color: #3949ab;
+            --accent-color: #ff7043;
+            --light-color: #f5f5f5;
+            --dark-color: #263238;
+            --success-color: #43a047;
+            --warning-color: #ffa000;
         }
-
-        td, th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--dark-color);
+            background-color: #f9f9f9;
         }
-
-        tr:nth-child(even) {
-        background-color: #dddddd;
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Merriweather', serif;
         }
-        </style>
+        
+        /* Navigation */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
+        }
+        
+        .navbar-brand img {
+            height: 50px;
+        }
+        
+        .user-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu li {
+            margin-left: 20px;
+        }
+        
+        .user-menu a {
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .user-menu a:hover {
+            color: var(--primary-color);
+        }
+        
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Main Navigation */
+        .main-navigation {
+            background-color: var(--primary-color);
+            padding: 10px 0;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        
+        .nav-menu li {
+            margin-right: 20px;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        /* Section Titles */
+        .section-title {
+            position: relative;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .section-title:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        
+        /* Inventory Table */
+        .inventory-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            background-color: white;
+            padding: 20px;
+        }
+        
+        .inventory-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .inventory-table thead {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .inventory-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .inventory-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+        
+        .inventory-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .inventory-table tr:hover {
+            background-color: rgba(94, 53, 177, 0.05);
+        }
+        
+        .stock-level {
+            font-weight: 600;
+        }
+        
+        .stock-high {
+            color: var(--success-color);
+        }
+        
+        .stock-medium {
+            color: var(--warning-color);
+        }
+        
+        .stock-low {
+            color: #e53935;
+        }
+        
+        .book-title {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .book-isbn {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .progress {
+            height: 8px;
+            border-radius: 4px;
+        }
+        
+        .progress-bar {
+            border-radius: 4px;
+        }
+        
+        /* Inventory Summary Cards */
+        .summary-card {
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            color: white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .summary-card.total {
+            background-color: var(--primary-color);
+        }
+        
+        .summary-card.available {
+            background-color: var(--success-color);
+        }
+        
+        .summary-card.sold {
+            background-color: var(--accent-color);
+        }
+        
+        .summary-card.low-stock {
+            background-color: #e53935;
+        }
+        
+        .summary-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .summary-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .summary-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .empty-state-icon {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state-text {
+            color: #888;
+            font-size: 1.1rem;
+        }
+        
+        /* Footer */
+        .site-footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-section {
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 30px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .inventory-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-menu li {
+                margin-bottom: 10px;
+            }
+            
+            .summary-card {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
 </head>
-<body>		
-    <div id="top-bar" class="container">
-        <div class="row">
-            <div class="span4">
-                <a href="./adminindex" class="logo pull-left"><img src="static/images/websitelogo.png" class="site_logo" alt=""></a>
+<body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="skip-link visually-hidden">Skip to main content</a>
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/adminindex">
+                <img src="static/images/bookharbor_logo_svg.svg" alt="Book Harbor" class="img-fluid">
+            </a>
+            
+            <div class="account">
+                <ul class="user-menu">             
+                    <li><a href="./logout" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a></li>
+                </ul>
             </div>
-            <div class="span8">
-                <div class="account pull-right">
-                    <ul class="user-menu">				
-                        <li><a href="./logout">Logout</a></li>
-                    </ul>
+        </div>
+    </nav>
+
+    <!-- Main Navigation -->
+    <nav class="main-navigation">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="./adminindex" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a></li>
+                <li><a href="./search" class="nav-link">
+                    <i class="fas fa-search"></i> Search Books
+                </a></li>
+                <li><a href="./books" class="nav-link">
+                    <i class="fas fa-book"></i> Manage Books
+                </a></li>
+                <li><a href="./inventory" class="nav-link active">
+                    <i class="fas fa-boxes"></i> Inventory
+                </a></li>
+                <li><a href="./users" class="nav-link">
+                    <i class="fas fa-users"></i> Users
+                </a></li>
+                <li><a href="./myorders" class="nav-link">
+                    <i class="fas fa-clipboard-list"></i> Orders
+                </a></li>
+                <li><a href="./myaccount" class="nav-link">
+                    <i class="fas fa-user-cog"></i> My Account
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" class="container my-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title">
+                <i class="fas fa-boxes me-2"></i> Inventory Management
+            </h2>
+            {% if bookData %}
+            <div class="results-count">{{ bookData|length }} books in inventory</div>
+            {% endif %}
+        </div>
+        
+        <!-- Inventory Summary Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="summary-card total">
+                    <div class="summary-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="summary-value">
+                        {% set total_books = bookData|sum(attribute=2) %}
+                        {{ total_books }}
+                    </div>
+                    <div class="summary-label">Total Books in Stock</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="summary-card available">
+                    <div class="summary-icon">
+                        <i class="fas fa-warehouse"></i>
+                    </div>
+                    <div class="summary-value">
+                        {% set available_books = bookData|sum(attribute=2) - bookData|sum(attribute=3) %}
+                        {{ available_books }}
+                    </div>
+                    <div class="summary-label">Available for Sale</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="summary-card sold">
+                    <div class="summary-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="summary-value">
+                        {% set sold_books = bookData|sum(attribute=3) %}
+                        {{ sold_books }}
+                    </div>
+                    <div class="summary-label">Books Sold</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="summary-card low-stock">
+                    <div class="summary-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="summary-value">
+                        {% set low_stock = [] %}
+                        {% for book in bookData %}
+                            {% if (book[2] - book[3]) < 5 %}
+                                {% set _ = low_stock.append(1) %}
+                            {% endif %}
+                        {% endfor %}
+                        {{ low_stock|sum }}
+                    </div>
+                    <div class="summary-label">Low Stock Items</div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="wrapper" class="container">
-        <section class="navbar main-menu">
-
-            <div class="navbar-inner main-menu">	
-                
-                <nav id="menu" class="pull-right">
-                    <ul>
-                        <li><a href="./adminindex">Home</a></li>
-                        <li><a href="./search">Search Books</a></li>
-                        <li><a href="./books" method="POST">Books</a>					
-                            <ul>
-                                <li><a href="./books">Add</a></li>									
-                                <li><a href="./books">Update</a></li>
-                                <li><a href="./books">Delete</a></li>			
-                            </ul>
-                        </li>
-                        <li><a href="#">Inventory</a></li>	
-                        <li><a href="./users">Users</a>					
-                            <ul>
-                                <li><a href="./users">Admins</a></li>									
-                                <li><a href="./users">Customers</a></li>					
-                            </ul>
-                        </li>
-                        <li><a href="./myorders">Orders</a></li>
-                        <li><a href="./myaccount">My Account</a></li>		
-                    </ul>
-                </nav>
-            </div>
-        </section>
-
-
-        <section class="main-content">
-            <div class="row">
-                <div class="span12">
-
-                    <!-- Inventory - Show stock details of each book -->
-                    <div class="row">
-                        <div class="span12">
-                            <h4 class="title">
-                                <span class="pull-left"><span class="text"><span class="line"><strong>INVENTORY</strong></span></span></span>
-                            </h4>
-                            </br>
-                                <table>
-                                    <tr>
-                                      <th>Book ISBN</th>
-                                      <th>Title</th>
-                                      <th>Total Stock</th>
-                                      <th>Sold Stock</th>
-                                    </tr>
-                                    {% for book in bookData %}
-                                        <tr>
-                                        <td>{{ book[0] }}</td>
-                                        <td>{{ book[1] }}</td>
-                                        <td>{{ book[2] }}</td>
-                                        <td>{{ book[3] }}</td>
-                                        </tr> 
-                                    {% endfor %}
-                                  </table>
-                                  </br>
-                        </div>						
+        
+        <div class="inventory-card">
+            {% if bookData %}
+                <div class="table-responsive">
+                    <table class="inventory-table">
+                        <thead>
+                            <tr>
+                                <th>Book ISBN</th>
+                                <th>Title</th>
+                                <th>Stock Level</th>
+                                <th>Available</th>
+                                <th>Sold</th>
+                                <th>Stock Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for book in bookData %}
+                            <tr>
+                                <td class="book-isbn">{{ book[0] }}</td>
+                                <td>
+                                    <div class="book-title">{{ book[1] }}</div>
+                                </td>
+                                <td class="stock-level">
+                                    {{ book[2] - book[3] }} / {{ book[2] }}
+                                </td>
+                                <td>{{ book[2] - book[3] }}</td>
+                                <td>{{ book[3] }}</td>
+                                <td>
+                                    {% set available_percent = ((book[2] - book[3]) / book[2]) * 100 %}
+                                    <div class="progress">
+                                        <div class="progress-bar 
+                                            {% if available_percent > 50 %}
+                                                bg-success
+                                            {% elif available_percent > 20 %}
+                                                bg-warning
+                                            {% else %}
+                                                bg-danger
+                                            {% endif %}" 
+                                            role="progressbar" 
+                                            style="width: {{ available_percent }}%" 
+                                            aria-valuenow="{{ available_percent }}" 
+                                            aria-valuemin="0" 
+                                            aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                    <small class="{% if available_percent > 50 %}stock-high{% elif available_percent > 20 %}stock-medium{% else %}stock-low{% endif %}">
+                                        {% if available_percent > 80 %}
+                                            High Stock
+                                        {% elif available_percent > 30 %}
+                                            Medium Stock
+                                        {% elif available_percent > 0 %}
+                                            Low Stock
+                                        {% else %}
+                                            Out of Stock
+                                        {% endif %}
+                                    </small>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-box-open"></i>
                     </div>
+                    <h4 class="empty-state-text">No inventory data found</h4>
+                    <a href="./books" class="btn btn-primary mt-3">
+                        <i class="fas fa-plus me-1"></i> Add Books
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </main>
 
-
-                </div>				
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <img src="static/images/bookharbor_logo_svg.svg" alt="Book Harbor" height="50" class="mb-3">
+                    <p>Your one-stop destination for discovering and managing your book inventory.</p>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="/adminindex">Home</a></li>
+                        <li><a href="/search">Search Books</a></li>
+                        <li><a href="./books">Manage Books</a></li>
+                        <li><a href="./inventory">Inventory</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4 mb-4">
+                    <h3>Contact Us</h3>
+                    <address>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 Book Street, Reading City</p>
+                        <p><i class="fas fa-phone"></i> +1 234 567 890</p>
+                        <p><i class="fas fa-envelope"></i> info@bookharbor.com</p>
+                    </address>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
             </div>
-        </section>
+            <div class="copyright">
+                <p>&copy; 2023 Book Harbor. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-        <section id="copyright">
-        </section>
-    </div>
-    <script src="static/js/common.js"></script>
-    <script src="static/js/jquery.flexslider-min.js"></script>
-    <script type="text/javascript">
-        $(function() {
-            $(document).ready(function() {
-                $('.flexslider').flexslider({
-                    animation: "fade",
-                    slideshowSpeed: 4000,
-                    animationSpeed: 600,
-                    controlNav: false,
-                    directionNav: true,
-                    controlsContainer: ".flex-container" // the container that holds the flexslider
-                });
-            });
-        });
-    </script>
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/main.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

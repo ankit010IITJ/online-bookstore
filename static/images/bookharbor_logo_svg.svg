@@ -1,0 +1,33 @@
+<svg width="400" height="100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient definition matching the orange-yellow theme -->
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#F7931E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFD23F;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Drop shadow filter -->
+    <filter id="dropshadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="2" flood-color="#00000020"/>
+    </filter>
+  </defs>
+  
+  <!-- Main logo text -->
+  <text x="200" y="55" 
+        font-family="Arial, sans-serif" 
+        font-size="42" 
+        font-weight="bold" 
+        text-anchor="middle" 
+        fill="url(#textGradient)"
+        filter="url(#dropshadow)"
+        letter-spacing="1px">BOOKHARBOR</text>
+  
+  <!-- Tagline -->
+  <text x="200" y="80" 
+        font-family="Arial, sans-serif" 
+        font-size="14" 
+        font-style="italic"
+        text-anchor="middle" 
+        fill="#666666">Your Literary Haven</text>
+</svg>

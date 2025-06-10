@@ -133,29 +133,42 @@ def inventory(mysql):
     return bookData
 
 # book details function
+# def bookDetail(mysql, subject):
+#     cur = mysql.connection.cursor()
+#     cur.execute("""
+#         SELECT 
+#             b.bookID,
+#             b.title,
+#             b.genre,
+#             b.price,
+#             b.publicationYear,
+#             a.firstName,
+#             a.lastName,
+#             p.country,
+#             i.totalStock,
+#             b.imageURL
+#         FROM Books AS b
+#         JOIN Authors AS a ON b.authorID = a.authorID
+#         JOIN Publishers AS p ON b.publisherID = p.publisherID
+#         LEFT JOIN Inventory AS i ON b.bookID = i.bookID
+#         WHERE b.bookID = %s
+#     """, (subject,))
+#     bookData = list(cur.fetchone())
+#     cur.close()
+#     return bookData
+
+
+
 def bookDetail(mysql, subject):
     cur = mysql.connection.cursor()
-    cur.execute("""
-        SELECT 
-            b.bookID,
-            b.title,
-            b.genre,
-            b.price,
-            b.publicationYear,
-            a.firstName,
-            a.lastName,
-            p.country,
-            i.totalStock,
-            b.imageURL
-        FROM Books AS b
-        JOIN Authors AS a ON b.authorID = a.authorID
-        JOIN Publishers AS p ON b.publisherID = p.publisherID
-        LEFT JOIN Inventory AS i ON b.bookID = i.bookID
-        WHERE b.bookID = %s
-    """, (subject,))
+    cur.execute("SELECT * FROM BookDetailsView WHERE bookID = %s", (subject,))
     bookData = list(cur.fetchone())
     cur.close()
     return bookData
+
+
+
+# cur.execute("SELECT * FROM BookDetailsView WHERE bookID = %s", (bookID,))
 
 
 # calcuate total cost of books
